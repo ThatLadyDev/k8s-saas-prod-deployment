@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mysql
+          image: thatladydev/devfest-database:v1.0
+          envFrom:
+            - configMapRef:
+                name: mysql-config
+          ports:
+            - containerPort: 3306
+          resources:
+            requests:
+              memory: "512Mi"  # The minimum amount of memory the container is guaranteed
+              cpu: "250m"
+            limits:
+              memory: "1Gi"  # The maximum amount of memory the container can use
+              cpu: "500m"
